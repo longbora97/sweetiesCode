@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sweet Cinematic Slideshow Pro - Magical Edition</title>
+    <title>Sweet Cinematic Slideshow Pro - Ultimate Edition</title>
+
+    <!-- Magical Emoji Favicon (Pink Bow) -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎀</text></svg>">
+
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap"
         rel="stylesheet">
 
@@ -184,8 +189,6 @@
             z-index: 999;
             overflow: hidden;
             cursor: crosshair;
-
-            /* Anti-Highlight & Anti-Touch Menu Fixes */
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
@@ -243,7 +246,33 @@
             pointer-events: none;
         }
 
-        /* PARALLAX & FX LAYERS */
+        /* PARALLAX, LIGHTING & FX LAYERS */
+        .sunrise-glow {
+            position: absolute;
+            bottom: -20vh;
+            left: 0;
+            width: 100%;
+            height: 80vh;
+            background: radial-gradient(ellipse at bottom, rgba(255, 170, 50, 0.5) 0%, transparent 70%);
+            mix-blend-mode: screen;
+            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .camera-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
         .light-leak {
             position: absolute;
             top: -50%;
@@ -289,8 +318,6 @@
 
         .text-layer {
             z-index: 7;
-            display: flex;
-            justify-content: center;
         }
 
         /* --- MAGICAL INTERACTIVE ELEMENTS --- */
@@ -304,57 +331,12 @@
             pointer-events: none;
         }
 
-        .floating-polaroid {
-            position: absolute;
-            width: clamp(100px, 20vw, 220px);
-            aspect-ratio: 1;
-            opacity: 0;
-            animation: floatUpFade 6s ease-in-out forwards;
-            pointer-events: auto;
-            cursor: grab;
-        }
-
-        .polaroid-inner {
-            width: 100%;
-            height: 100%;
-            padding: 8px 8px 25px 8px;
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .floating-polaroid:hover .polaroid-inner,
-        .floating-polaroid:active .polaroid-inner {
-            transform: scale(1.15) rotate(0deg);
-            box-shadow: 0 25px 50px rgba(255, 183, 178, 0.8);
-            z-index: 50;
-        }
-
-        .polaroid-inner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: none;
-        }
-
         .floating-sticker {
             position: absolute;
             font-size: clamp(2rem, 5vw, 4rem);
             filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
             opacity: 0;
             animation: popAndDrift 4s ease-in-out forwards;
-            pointer-events: none;
-        }
-
-        .cinematic-text {
-            position: absolute;
-            font-family: 'Pacifico', cursive;
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            color: #fff;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.6);
-            opacity: 0;
-            animation: cinematicTextFade 6s ease-in-out forwards;
             pointer-events: none;
         }
 
@@ -374,6 +356,133 @@
             font-size: 2rem;
             animation: heartBurst 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
             filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
+        }
+
+        /* --- HANGING DROPDOWN WORDS --- */
+        .hanging-container {
+            position: absolute;
+            top: -20vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: dropWord 8s ease-in-out forwards;
+            pointer-events: none;
+        }
+
+        .hanging-hinge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: top center;
+            transition: transform 0.1s linear;
+        }
+
+        .string {
+            width: 3px;
+            height: 15vh;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .word-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 10px 25px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin-top: -5px;
+        }
+
+        /* --- RANDOM OVERLAP SHAPES --- */
+        .floating-shape {
+            position: absolute;
+            width: clamp(110px, 20vw, 220px);
+            aspect-ratio: 1;
+            opacity: 0;
+            animation: floatUpFade 6.5s ease-in-out forwards;
+            pointer-events: auto;
+            cursor: grab;
+        }
+
+        .shape-inner {
+            width: 100%;
+            height: 100%;
+            background: white;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-shape:hover .shape-inner,
+        .floating-shape:active .shape-inner {
+            transform: scale(1.15) !important;
+            box-shadow: 0 25px 50px rgba(255, 255, 255, 0.4);
+            z-index: 50;
+        }
+
+        .shape-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        /* Shape Modifiers */
+        .type-polaroid {
+            padding: 8px 8px 25px 8px;
+            border-radius: 4px;
+        }
+
+        .type-circle {
+            padding: 6px;
+            border-radius: 50%;
+        }
+
+        .type-circle img {
+            border-radius: 50%;
+        }
+
+        .type-arch {
+            padding: 6px;
+            border-radius: 100px 100px 10px 10px;
+        }
+
+        .type-arch img {
+            border-radius: 94px 94px 4px 4px;
+        }
+
+        .type-blob {
+            padding: 6px;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            animation: blobAnim 6s infinite alternate ease-in-out;
+        }
+
+        .type-blob img {
+            border-radius: inherit;
+        }
+
+        .type-heart {
+            background: none;
+            box-shadow: none;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.4));
+        }
+
+        .type-heart img {
+            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>');
+            mask-size: cover;
+            mask-position: center;
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>');
+            -webkit-mask-size: cover;
+            -webkit-mask-position: center;
         }
 
         /* --- UI & BLACK SCREEN --- */
@@ -561,29 +670,6 @@
             }
         }
 
-        @keyframes cinematicTextFade {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            20% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            80% {
-                opacity: 1;
-                transform: translateY(-10px);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(-30px);
-                filter: blur(5px);
-            }
-        }
-
         @keyframes dustFade {
             0% {
                 opacity: 1;
@@ -605,6 +691,69 @@
             100% {
                 opacity: 0;
                 transform: translate(var(--tx), var(--ty)) scale(1.5);
+            }
+        }
+
+        @keyframes blobAnim {
+            0% {
+                border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            }
+
+            100% {
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            }
+        }
+
+        @keyframes dropWord {
+            0% {
+                top: -30vh;
+                opacity: 0;
+            }
+
+            20% {
+                top: -2vh;
+                opacity: 1;
+            }
+
+            80% {
+                top: -2vh;
+                opacity: 1;
+            }
+
+            100% {
+                top: -30vh;
+                opacity: 0;
+            }
+        }
+
+        @keyframes flashAnim {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes sunriseAnim {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-30px);
             }
         }
     </style>
@@ -659,13 +808,17 @@
         </div>
 
         <div id="main-slides-container"></div>
+
+        <!-- Lighting Effects -->
+        <div class="sunrise-glow" id="sunrise-glow"></div>
+        <div class="camera-flash" id="camera-flash"></div>
         <div class="light-leak" id="light-leak"></div>
 
         <!-- Parallax interactive layers -->
         <div class="parallax-layer overlap-layer" id="overlap-layer"></div>
         <div class="parallax-layer sticker-layer" id="sticker-layer"></div>
         <div class="parallax-layer snow-layer" id="snow-layer"></div>
-        <div class="parallax-layer text-layer" id="text-layer"></div>
+        <div class="text-layer" id="text-layer"></div>
 
         <div class="ui-layer" id="ui-layer">
             <button class="close-btn" id="close-btn">✖ Close</button>
@@ -697,6 +850,8 @@
 
         const mainSlidesContainer = document.getElementById('main-slides-container');
         const lightLeak = document.getElementById('light-leak');
+        const cameraFlash = document.getElementById('camera-flash');
+        const sunriseGlow = document.getElementById('sunrise-glow');
         const overlapLayer = document.getElementById('overlap-layer');
         const stickerLayer = document.getElementById('sticker-layer');
         const snowLayer = document.getElementById('snow-layer');
@@ -705,16 +860,24 @@
 
         let uploadedImagesData = [];
         let currentSlideIndex = 0;
-        let slideInterval, overlapInterval, stickerInterval, textInterval, snowInterval, lightInterval, uiHideTimeout, audioLoadTimeout;
+        let slideInterval, overlapInterval, stickerInterval, textInterval, snowInterval, lightInterval, lightingEffectInterval, uiHideTimeout, audioLoadTimeout;
         let customAudioURL = null;
 
-        const randomMusicLinks = [
-            "https://cdn.pixabay.com/audio/2026/03/07/audio_a7f0ee17c8.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_4bc4f04f25.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_96ab9894e9.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_0d0093ffa8.mp3", "https://cdn.pixabay.com/audio/2022/06/27/audio_9c852fdef1.mp3", "https://cdn.pixabay.com/audio/2025/08/19/audio_c219c315d7.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_1d3cef79ec.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_f18bf9cec8.mp3", "https://cdn.pixabay.com/audio/2025/12/18/audio_fcab73293f.mp3", "https://cdn.pixabay.com/audio/2026/04/21/audio_8cbf6d2c29.mp3", "https://cdn.pixabay.com/audio/2024/08/14/audio_82030d100c.mp3", "https://cdn.pixabay.com/audio/2025/11/19/audio_2780c654a2.mp3"
-        ];
+        const randomMusicLinks = ["https://cdn.pixabay.com/audio/2026/03/07/audio_a7f0ee17c8.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_4bc4f04f25.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_96ab9894e9.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_0d0093ffa8.mp3", "https://cdn.pixabay.com/audio/2022/06/27/audio_9c852fdef1.mp3", "https://cdn.pixabay.com/audio/2025/08/19/audio_c219c315d7.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_1d3cef79ec.mp3", "https://cdn.pixabay.com/audio/2025/06/13/audio_f18bf9cec8.mp3", "https://cdn.pixabay.com/audio/2025/12/18/audio_fcab73293f.mp3", "https://cdn.pixabay.com/audio/2026/04/21/audio_8cbf6d2c29.mp3", "https://cdn.pixabay.com/audio/2024/08/14/audio_82030d100c.mp3", "https://cdn.pixabay.com/audio/2025/11/19/audio_2780c654a2.mp3"];
+        const shapeTypes = ['type-polaroid', 'type-circle', 'type-arch', 'type-blob', 'type-heart'];
         const sweetStickers = ['💖', '🎀', '🌸', '✨', '🧸', '🍓', '🦋', '💝', '🕊️'];
         const snowSymbols = ['❄️', '✦', '✨', '🤍', '⭐'];
         const dustSymbols = ['✨', '✦', '⭐', '💖'];
-        const cinematicPhrases = ["Our Sweetest Moments", "Forever & Always", "You & Me", "Endless Love", "Just Magic ✨", "Perfect Together 💕"];
+
+        const cinematicPhrases = [
+            "Our Sweetest Moments", "Forever & Always", "You & Me", "Endless Love", "Just Magic ✨",
+            "Perfect Together 💕", "Written in the Stars ✨", "To the Moon and Back 🌙", "My Safe Place 🏡",
+            "A Thousand Years...", "Once Upon a Time 📖", "Our Little Infinity ♾️", "Wildly in Love",
+            "Better Together", "Soulmates", "A Love Like Ours", "Every Breath You Take", "Unforgettable",
+            "My Heart is Yours", "The Best is Yet to Come", "Always and Forever", "You Are My Sunshine ☀️",
+            "Love at First Sight", "My Everything", "A Beautiful Journey", "Treasured Memories",
+            "Smiles & Laughter", "Heart to Heart", "Beyond Words", "Lost in Your Eyes", "Pure Happiness"
+        ];
 
         // --- INTERACTIVE PHYSICS STATE ---
         let targetWindX = 0, targetWindY = 0;
@@ -737,9 +900,7 @@
         });
 
         // Upload & Reset
-        resetBtn.addEventListener('click', () => {
-            fileInput.value = ""; uploadedImagesData = []; settingsPanel.style.display = 'none'; startBtn.style.display = 'none'; resetBtn.style.display = 'none'; uploadLabel.style.display = 'inline-block'; subtitleText.textContent = "Upload your cutest moments ✨ (Max 25)"; errorMsg.textContent = "";
-        });
+        resetBtn.addEventListener('click', () => { fileInput.value = ""; uploadedImagesData = []; settingsPanel.style.display = 'none'; startBtn.style.display = 'none'; resetBtn.style.display = 'none'; uploadLabel.style.display = 'inline-block'; subtitleText.textContent = "Upload your cutest moments ✨ (Max 25)"; errorMsg.textContent = ""; });
 
         fileInput.addEventListener('change', function (event) {
             const files = Array.from(event.target.files).filter(f => f.type.startsWith("image/"));
@@ -760,31 +921,13 @@
             });
         });
 
-        // FULLSCREEN HELPER FUNCTIONS
-        function openFullscreen() {
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) { elem.requestFullscreen().catch(() => { }); }
-            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } // Safari
-            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); } // IE11
-        }
-
-        function closeFullscreen() {
-            if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
-                if (document.exitFullscreen) { document.exitFullscreen(); }
-                else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-                else if (document.msExitFullscreen) { document.msExitFullscreen(); }
-            }
-        }
+        function openFullscreen() { const elem = document.documentElement; if (elem.requestFullscreen) { elem.requestFullscreen().catch(() => { }); } else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); } }
+        function closeFullscreen() { if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) { if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } else if (document.msExitFullscreen) { document.msExitFullscreen(); } } }
 
         // --- START BUTTON ---
         startBtn.addEventListener('click', () => {
-            // Trigger Native Fullscreen
             openFullscreen();
-
-            // Request Apple iOS Device Orientation Permission
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission().catch(console.error);
-            }
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') { DeviceOrientationEvent.requestPermission().catch(console.error); }
 
             uploadView.style.display = 'none'; fullscreenView.style.display = 'block';
             mainSlidesContainer.innerHTML = overlapLayer.innerHTML = stickerLayer.innerHTML = snowLayer.innerHTML = textLayer.innerHTML = '';
@@ -798,17 +941,8 @@
 
             if (document.getElementById('chk-music').checked) {
                 loadingOverlay.style.display = 'flex'; audioEl.loop = true; audioEl.volume = 0.5; let failCount = 0;
-                const playAndStart = () => {
-                    clearTimeout(audioLoadTimeout); if (loadingOverlay.style.display === 'flex') {
-                        loadingOverlay.style.display = 'none'; audioEl.play().catch(e => console.log("Audio play blocked", e)); beginVisuals();
-                    }
-                };
-                const tryLoadSong = () => {
-                    if (failCount > 5) { playAndStart(); return; }
-                    const isRandom = document.querySelector('input[name="music-type"]:checked').value === 'random';
-                    audioEl.src = (!customAudioURL || isRandom) ? randomMusicLinks[Math.floor(Math.random() * randomMusicLinks.length)] : customAudioURL;
-                    audioEl.load();
-                };
+                const playAndStart = () => { clearTimeout(audioLoadTimeout); if (loadingOverlay.style.display === 'flex') { loadingOverlay.style.display = 'none'; audioEl.play().catch(e => console.log("Audio play blocked", e)); beginVisuals(); } };
+                const tryLoadSong = () => { if (failCount > 5) { playAndStart(); return; } const isRandom = document.querySelector('input[name="music-type"]:checked').value === 'random'; audioEl.src = (!customAudioURL || isRandom) ? randomMusicLinks[Math.floor(Math.random() * randomMusicLinks.length)] : customAudioURL; audioEl.load(); };
                 audioEl.oncanplaythrough = playAndStart; audioEl.onerror = () => { failCount++; tryLoadSong(); };
                 tryLoadSong(); audioLoadTimeout = setTimeout(playAndStart, 8000);
             } else { beginVisuals(); }
@@ -817,149 +951,122 @@
         function beginVisuals() {
             currentSlideIndex = 0; setTimeout(spawnCinematicText, 1000);
             slideInterval = setInterval(nextSlide, 5000); overlapInterval = setInterval(spawnOverlap, 4000);
-            stickerInterval = setInterval(spawnSticker, 2000); textInterval = setInterval(spawnCinematicText, 7000);
-            snowInterval = setInterval(spawnSnow, 300); lightInterval = setInterval(() => lightLeak.classList.toggle('show'), 6000);
-
+            stickerInterval = setInterval(spawnSticker, 2000); textInterval = setInterval(spawnCinematicText, 8000);
+            snowInterval = setInterval(spawnSnow, 380); lightInterval = setInterval(() => lightLeak.classList.toggle('show'), 6000);
+            lightingEffectInterval = setInterval(triggerLightingEffect, 9000);
             physicsAnimationId = requestAnimationFrame(animatePhysics);
         }
 
-        // --- INTERACTIVE PHYSICS ENGINE (SNOWGLOBE EFFECT) ---
         function animatePhysics() {
-            currentWindX += (targetWindX - currentWindX) * 0.05;
-            currentWindY += (targetWindY - currentWindY) * 0.05;
-
+            currentWindX += (targetWindX - currentWindX) * 0.05; currentWindY += (targetWindY - currentWindY) * 0.05;
             snowLayer.style.transform = `translate(${currentWindX * 1.5}px, ${currentWindY * 1.5}px)`;
             stickerLayer.style.transform = `translate(${currentWindX * 0.8}px, ${currentWindY * 0.8}px)`;
             overlapLayer.style.transform = `translate(${currentWindX * 0.4}px, ${currentWindY * 0.4}px)`;
             lightLeak.style.backgroundPosition = `${50 + (currentWindX * 0.1)}% ${50 + (currentWindY * 0.1)}%`;
-
+            document.querySelectorAll('.hanging-hinge').forEach(hinge => { hinge.style.transform = `rotate(${currentWindX * 0.4}deg)`; });
             physicsAnimationId = requestAnimationFrame(animatePhysics);
         }
 
-        // Track Mouse & Touch
         function handleMove(e) {
-            const x = e.touches ? e.touches[0].clientX : e.clientX;
-            const y = e.touches ? e.touches[0].clientY : e.clientY;
-
-            targetWindX = (x - window.innerWidth / 2) * 0.2;
-            targetWindY = (y - window.innerHeight / 2) * 0.2;
-
-            const now = Date.now();
-            if (now - lastDustTime > 40) { spawnDust(x, y); lastDustTime = now; }
+            const x = e.touches ? e.touches[0].clientX : e.clientX; const y = e.touches ? e.touches[0].clientY : e.clientY;
+            targetWindX = (x - window.innerWidth / 2) * 0.2; targetWindY = (y - window.innerHeight / 2) * 0.2;
+            const now = Date.now(); if (now - lastDustTime > 40) { spawnDust(x, y); lastDustTime = now; }
         }
-        window.addEventListener('mousemove', handleMove);
-        window.addEventListener('touchmove', handleMove, { passive: true });
+        window.addEventListener('mousemove', handleMove); window.addEventListener('touchmove', handleMove, { passive: true });
+        window.addEventListener('deviceorientation', (e) => { if (e.gamma !== null && e.beta !== null) { targetWindX = e.gamma * 2; targetWindY = e.beta * 2; } });
 
-        // Track Smartphone Tilt
-        window.addEventListener('deviceorientation', (e) => {
-            if (e.gamma !== null && e.beta !== null) {
-                targetWindX = e.gamma * 2;
-                targetWindY = e.beta * 2;
-            }
-        });
+        // --- EFFECTS ---
+        function triggerLightingEffect() {
+            const rand = Math.random();
+            if (rand < 0.3) { cameraFlash.style.animation = 'none'; void cameraFlash.offsetWidth; cameraFlash.style.animation = 'flashAnim 0.8s ease-out forwards'; }
+            else if (rand < 0.6) { sunriseGlow.style.animation = 'none'; void sunriseGlow.offsetWidth; sunriseGlow.style.animation = 'sunriseAnim 8s ease-in-out forwards'; }
+        }
 
-        // --- MAGICAL EFFECTS SPAWNERS ---
         function spawnDust(x, y) {
             if (fullscreenView.style.display !== 'block') return;
-            const dust = document.createElement('div'); dust.className = 'fairy-dust';
-            dust.innerText = dustSymbols[Math.floor(Math.random() * dustSymbols.length)];
-            dust.style.left = `${x}px`; dust.style.top = `${y}px`;
-            fullscreenView.appendChild(dust);
-            setTimeout(() => { if (dust.parentNode) dust.remove(); }, 600);
+            const dust = document.createElement('div'); dust.className = 'fairy-dust'; dust.innerText = dustSymbols[Math.floor(Math.random() * dustSymbols.length)];
+            dust.style.left = `${x}px`; dust.style.top = `${y}px`; fullscreenView.appendChild(dust); setTimeout(() => { if (dust.parentNode) dust.remove(); }, 600);
         }
 
         function spawnHeartBurst(x, y) {
             for (let i = 0; i < 6; i++) {
                 const heart = document.createElement('div'); heart.className = 'burst-heart'; heart.innerText = '💖';
                 heart.style.left = `${x - 15}px`; heart.style.top = `${y - 15}px`;
-                heart.style.setProperty('--tx', `${(Math.random() - 0.5) * 150}px`);
-                heart.style.setProperty('--ty', `${(Math.random() - 0.5) * 150}px`);
-                fullscreenView.appendChild(heart);
-                setTimeout(() => { if (heart.parentNode) heart.remove(); }, 1000);
+                heart.style.setProperty('--tx', `${(Math.random() - 0.5) * 150}px`); heart.style.setProperty('--ty', `${(Math.random() - 0.5) * 150}px`);
+                fullscreenView.appendChild(heart); setTimeout(() => { if (heart.parentNode) heart.remove(); }, 1000);
             }
         }
 
         function spawnOverlap() {
             if (uploadedImagesData.length < 2) return;
-            const wrapper = document.createElement('div'); wrapper.className = 'floating-polaroid';
+            const wrapper = document.createElement('div'); wrapper.className = 'floating-shape';
             wrapper.style.left = `${10 + Math.random() * 60}vw`; wrapper.style.top = `${10 + Math.random() * 60}vh`;
-            wrapper.style.setProperty('--rot-start', `${(Math.random() * 40) - 20}deg`);
-            wrapper.style.setProperty('--rot-end', `${(Math.random() * 60) - 30}deg`);
+            wrapper.style.setProperty('--rot-start', `${(Math.random() * 40) - 20}deg`); wrapper.style.setProperty('--rot-end', `${(Math.random() * 60) - 30}deg`);
 
-            const inner = document.createElement('div'); inner.className = 'polaroid-inner';
+            const randomShape = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+            const inner = document.createElement('div'); inner.className = `shape-inner ${randomShape}`;
             inner.innerHTML = `<img src="${uploadedImagesData[Math.floor(Math.random() * uploadedImagesData.length)]}">`;
             wrapper.appendChild(inner);
 
-            const pauseAnim = () => wrapper.style.animationPlayState = 'paused';
-            const playAnim = () => wrapper.style.animationPlayState = 'running';
+            const pauseAnim = () => wrapper.style.animationPlayState = 'paused'; const playAnim = () => wrapper.style.animationPlayState = 'running';
             wrapper.addEventListener('mouseenter', pauseAnim); wrapper.addEventListener('mouseleave', playAnim);
             wrapper.addEventListener('touchstart', pauseAnim, { passive: true }); wrapper.addEventListener('touchend', playAnim);
 
-            overlapLayer.appendChild(wrapper);
-            setTimeout(() => { if (wrapper.parentNode) wrapper.remove(); }, 6000);
+            overlapLayer.appendChild(wrapper); setTimeout(() => { if (wrapper.parentNode) wrapper.remove(); }, 6500);
         }
 
         function spawnSnow() {
-            const snow = document.createElement('div'); snow.className = 'snow-particle';
-            snow.innerText = snowSymbols[Math.floor(Math.random() * snowSymbols.length)];
-            snow.style.left = `${Math.random() * 100}vw`; const duration = Math.random() * 5 + 5;
-            snow.style.animationDuration = `${duration}s`; snow.style.fontSize = `${Math.random() * 1.5 + 0.8}rem`;
+            const snow = document.createElement('div'); snow.className = 'snow-particle'; snow.innerText = snowSymbols[Math.floor(Math.random() * snowSymbols.length)];
+            snow.style.left = `${Math.random() * 100}vw`; const duration = Math.random() * 5 + 5; snow.style.animationDuration = `${duration}s`; snow.style.fontSize = `${Math.random() * 1.5 + 0.8}rem`;
             snowLayer.appendChild(snow); setTimeout(() => { if (snow.parentNode) snow.remove(); }, duration * 1000);
         }
+
         function spawnSticker() {
-            const sticker = document.createElement('div'); sticker.className = 'floating-sticker';
-            sticker.innerText = sweetStickers[Math.floor(Math.random() * sweetStickers.length)];
+            const sticker = document.createElement('div'); sticker.className = 'floating-sticker'; sticker.innerText = sweetStickers[Math.floor(Math.random() * sweetStickers.length)];
             sticker.style.left = `${5 + Math.random() * 85}vw`; sticker.style.top = `${10 + Math.random() * 70}vh`;
             stickerLayer.appendChild(sticker); setTimeout(() => { if (sticker.parentNode) sticker.remove(); }, 4000);
         }
+
         function spawnCinematicText() {
-            const el = document.createElement('div'); el.className = 'cinematic-text';
-            el.innerText = cinematicPhrases[Math.floor(Math.random() * cinematicPhrases.length)];
-            el.style.top = `${30 + Math.random() * 30}vh`; textLayer.appendChild(el);
-            setTimeout(() => { if (el.parentNode) el.remove(); }, 6000);
+            const container = document.createElement('div'); container.className = 'hanging-container';
+            container.style.left = `${10 + Math.random() * 80}vw`;
+            const phrase = cinematicPhrases[Math.floor(Math.random() * cinematicPhrases.length)];
+            container.innerHTML = `<div class="hanging-hinge"><div class="string"></div><div class="word-box">${phrase}</div></div>`;
+            textLayer.appendChild(container); setTimeout(() => { if (container.parentNode) container.remove(); }, 8000);
         }
 
         function nextSlide() {
-            const slides = document.querySelectorAll('.main-slide');
-            slides[currentSlideIndex].classList.remove('active'); currentSlideIndex++;
-            if (currentSlideIndex >= slides.length) {
-                if (!document.getElementById('chk-loop').checked) { endSlideshow(); return; }
-                currentSlideIndex = 0;
-            }
+            const slides = document.querySelectorAll('.main-slide'); slides[currentSlideIndex].classList.remove('active'); currentSlideIndex++;
+            if (currentSlideIndex >= slides.length) { if (!document.getElementById('chk-loop').checked) { endSlideshow(); return; } currentSlideIndex = 0; }
             slides[currentSlideIndex].classList.add('active');
         }
 
-        // --- SCREEN CLICK INTERACTION ---
+        // --- INTERACTION ---
         fullscreenView.addEventListener('mousedown', (e) => {
-            if (e.target.closest('#close-btn') || e.target.closest('.floating-polaroid') || loadingOverlay.style.display === 'flex') return;
-            spawnHeartBurst(e.clientX, e.clientY);
-            uiLayer.classList.toggle('visible'); clearTimeout(uiHideTimeout);
+            if (e.target.closest('#close-btn') || e.target.closest('.floating-shape') || loadingOverlay.style.display === 'flex') return;
+            spawnHeartBurst(e.clientX, e.clientY); uiLayer.classList.toggle('visible'); clearTimeout(uiHideTimeout);
             if (uiLayer.classList.contains('visible')) uiHideTimeout = setTimeout(() => uiLayer.classList.remove('visible'), 4000);
         });
 
         fullscreenView.addEventListener('touchstart', (e) => {
-            if (e.target.closest('#close-btn') || e.target.closest('.floating-polaroid') || loadingOverlay.style.display === 'flex') return;
-            spawnHeartBurst(e.touches[0].clientX, e.touches[0].clientY);
-            uiLayer.classList.toggle('visible'); clearTimeout(uiHideTimeout);
+            if (e.target.closest('#close-btn') || e.target.closest('.floating-shape') || loadingOverlay.style.display === 'flex') return;
+            spawnHeartBurst(e.touches[0].clientX, e.touches[0].clientY); uiLayer.classList.toggle('visible'); clearTimeout(uiHideTimeout);
             if (uiLayer.classList.contains('visible')) uiHideTimeout = setTimeout(() => uiLayer.classList.remove('visible'), 4000);
         }, { passive: true });
 
         document.getElementById('close-btn').addEventListener('click', endSlideshow);
 
         function endSlideshow() {
-            closeFullscreen(); // Exit Native Fullscreen
-
+            closeFullscreen();
             clearInterval(slideInterval); clearInterval(overlapInterval); clearInterval(stickerInterval);
-            clearInterval(textInterval); clearInterval(snowInterval); clearInterval(lightInterval);
+            clearInterval(textInterval); clearInterval(snowInterval); clearInterval(lightInterval); clearInterval(lightingEffectInterval);
             clearTimeout(uiHideTimeout); cancelAnimationFrame(physicsAnimationId);
 
-            audioEl.pause(); audioEl.currentTime = 0;
-            fullscreenView.style.display = 'none'; uiLayer.classList.remove('visible');
+            audioEl.pause(); audioEl.currentTime = 0; fullscreenView.style.display = 'none'; uiLayer.classList.remove('visible');
 
             const endAction = document.getElementById('chk-loop').checked ? 'home' : document.querySelector('input[name="end-action"]:checked').value;
-            if (endAction === 'black') {
-                document.getElementById('black-screen').style.display = 'flex'; setTimeout(() => document.getElementById('black-screen').style.opacity = '1', 50);
-            } else { uploadView.style.display = 'block'; resetBtn.click(); }
+            if (endAction === 'black') { document.getElementById('black-screen').style.display = 'flex'; setTimeout(() => document.getElementById('black-screen').style.opacity = '1', 50); }
+            else { uploadView.style.display = 'block'; resetBtn.click(); }
         }
     </script>
 </body>
